@@ -1,5 +1,6 @@
 package mk.ukim.finki.emt.productcatalog.domain.models;
 
+import lombok.NoArgsConstructor;
 import mk.ukim.finki.emt.productcatalog.domain.valueobjects.Quantity;
 import mk.ukim.finki.emt.sharedkernel.domain.base.AbstractEntity;
 import mk.ukim.finki.emt.sharedkernel.domain.financial.Money;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "product")
+@NoArgsConstructor
 public class Product extends AbstractEntity<ProductId> {
 
     private String productName;

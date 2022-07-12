@@ -3,6 +3,7 @@ package mk.ukim.finki.emt.sharedkernel.domain.financial;
 import lombok.Getter;
 import lombok.NonNull;
 import mk.ukim.finki.emt.sharedkernel.domain.base.ValueObject;
+import mk.ukim.finki.emt.sharedkernel.domain.financial.enumerations.Currency;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
