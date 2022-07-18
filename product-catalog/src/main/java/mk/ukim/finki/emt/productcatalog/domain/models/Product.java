@@ -1,9 +1,6 @@
 package mk.ukim.finki.emt.productcatalog.domain.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import mk.ukim.finki.emt.productcatalog.domain.valueobjects.Quantity;
 import mk.ukim.finki.emt.sharedkernel.domain.base.AbstractEntity;
 import mk.ukim.finki.emt.sharedkernel.domain.financial.Money;
 

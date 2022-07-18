@@ -22,11 +22,15 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final Validator validator;
+
+    public OrderServiceImpl(OrderRepository orderRepository, Validator validator) {
+        this.orderRepository = orderRepository;
+        this.validator = validator;
+    }
 
     @Override
     public OrderId placeOrder(OrderForm orderForm) {

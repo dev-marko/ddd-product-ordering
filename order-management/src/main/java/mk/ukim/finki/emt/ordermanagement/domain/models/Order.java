@@ -9,6 +9,7 @@ import mk.ukim.finki.emt.sharedkernel.domain.financial.enumerations.Currency;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class Order extends AbstractEntity<OrderId> {
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER)
-    private Set<OrderItem> orderItemList;
+    private Set<OrderItem> orderItemList = new HashSet<>();;
 
     private Order() {
         super(OrderId.randomId(OrderId.class));
