@@ -1,5 +1,6 @@
 package mk.ukim.finki.emt.ordermanagement.domain.models;
 
+import lombok.Getter;
 import org.springframework.lang.NonNull;
 import mk.ukim.finki.emt.ordermanagement.domain.enumerations.OrderState;
 import mk.ukim.finki.emt.ordermanagement.domain.valueobjects.Product;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
+@Getter
 public class Order extends AbstractEntity<OrderId> {
 
     private Instant orderedOn;

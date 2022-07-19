@@ -10,6 +10,9 @@ import mk.ukim.finki.emt.ordermanagement.domain.repository.OrderRepository;
 import mk.ukim.finki.emt.ordermanagement.services.OrderService;
 import mk.ukim.finki.emt.ordermanagement.services.forms.OrderForm;
 import mk.ukim.finki.emt.ordermanagement.services.forms.OrderItemForm;
+import mk.ukim.finki.emt.sharedkernel.domain.events.orders.OrderItemCreated;
+import mk.ukim.finki.emt.sharedkernel.domain.events.orders.OrderItemRemoved;
+import mk.ukim.finki.emt.sharedkernel.infrastructure.DomainEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +28,12 @@ import java.util.Optional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final DomainEventPublisher domainEventPublisher;
     private final Validator validator;
 
-    public OrderServiceImpl(OrderRepository orderRepository, Validator validator) {
+    public OrderServiceImpl(OrderRepository orderRepository, DomainEventPublisher domainEventPublisher, Validator validator) {
         this.orderRepository = orderRepository;
+        this.domainEventPublisher = domainEventPublisher;
         this.validator = validator;
     }
 
@@ -42,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         var newOrder = orderRepository.saveAndFlush(toDomainObject(orderForm));
+        newOrder.getOrderItemList().forEach(item -> domainEventPublisher.publish(new OrderItemCreated(item.getProductId().getId(),item.getQuantity())));
         return newOrder.getId();
     }
 
@@ -60,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderIdNotExistException::new);
         order.addItem(orderItemForm.getProduct(), orderItemForm.getQuantity());
         orderRepository.saveAndFlush(order);
+        domainEventPublisher.publish(new OrderItemCreated(orderItemForm.getProduct().getId().getId(), orderItemForm.getQuantity()));
     }
 
     @Override
@@ -67,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(OrderIdNotExistException::new);
         order.removeItem(orderItemId);
         orderRepository.saveAndFlush(order);
+        //domainEventPublisher.publish(new OrderItemRemoved(orderItemForm.getProduct().getId().getId(), orderItemForm.getQuantity()));
     }
 
     private Order toDomainObject(OrderForm orderForm) {
